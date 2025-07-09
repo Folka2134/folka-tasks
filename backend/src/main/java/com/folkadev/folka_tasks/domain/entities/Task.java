@@ -30,22 +30,21 @@ public class Task {
   @Column(name = "status", nullable = false)
   private TaskStatus status;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "task_list_id")
+  private TaskList taskList;
+
   @Column(name = "created", updatable = false, nullable = false)
   private LocalDateTime created;
 
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
-  // @Column(name = "taskList")
-  // private TaskList taskList;
-  //
-
   public Task() {
-
   }
 
   public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskPriority priority,
-      TaskStatus status, LocalDateTime created, LocalDateTime updated) {
+      TaskStatus status, TaskList task, LocalDateTime created, LocalDateTime updated) {
 
     this.id = id;
     this.title = title;
@@ -53,11 +52,11 @@ public class Task {
     this.dueDate = dueDate;
     this.priority = priority;
     this.status = status;
+    this.taskList = task;
     this.created = created;
     this.updated = updated;
   }
 
-  // Generate getters and setters
   public UUID getId() {
     return id;
   }
@@ -106,6 +105,14 @@ public class Task {
     this.status = status;
   }
 
+  public TaskList getTaskList() {
+    return taskList;
+  }
+
+  public void setTaskList(TaskList taskList) {
+    this.taskList = taskList;
+  }
+
   public LocalDateTime getCreated() {
     return created;
   }
@@ -122,7 +129,6 @@ public class Task {
     this.updated = updated;
   }
 
-  // Generate equals and hashCode methods
   @Override
   public boolean equals(Object o) {
     if (this == o)
@@ -136,16 +142,16 @@ public class Task {
         Objects.equals(dueDate, task.dueDate) &&
         priority == task.priority &&
         status == task.status &&
+        Objects.equals(taskList, task.taskList) &&
         Objects.equals(created, task.created) &&
         Objects.equals(updated, task.updated);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, description, dueDate, priority, status, created, updated);
+    return Objects.hash(id, title, description, dueDate, priority, status, taskList, created, updated);
   }
 
-  // Generate toString method
   @Override
   public String toString() {
     return "Task{" +
@@ -155,9 +161,9 @@ public class Task {
         ", dueDate=" + dueDate +
         ", priority=" + priority +
         ", status=" + status +
+        ", taskList=" + taskList +
         ", created=" + created +
         ", updated=" + updated +
         '}';
   }
-
 }
