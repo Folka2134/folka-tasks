@@ -24,7 +24,7 @@ public class Task {
   @Column(name = "dueDate")
   private LocalDateTime dueDate;
 
-  @Column(name = "status")
+  @Column(name = "priority")
   private TaskPriority priority;
 
   @Column(name = "status", nullable = false)
@@ -33,6 +33,10 @@ public class Task {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "task_list_id")
   private TaskList taskList;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   @Column(name = "created", updatable = false, nullable = false)
   private LocalDateTime created;
@@ -43,10 +47,8 @@ public class Task {
   public Task() {
   }
 
-  public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskPriority priority,
+  public Task(String title, String description, LocalDateTime dueDate, TaskPriority priority,
       TaskStatus status, TaskList task, LocalDateTime created, LocalDateTime updated) {
-
-    this.id = id;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
