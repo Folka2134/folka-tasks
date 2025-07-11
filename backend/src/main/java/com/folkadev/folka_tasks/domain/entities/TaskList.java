@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -25,22 +28,22 @@ public class TaskList {
   @OneToMany(mappedBy = "taskList", cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
   private List<Task> tasks;
 
-  @Column(name = "created", nullable = false)
+  @CreationTimestamp
+  @Column(name = "created", nullable = false, updatable = false)
   private LocalDateTime created;
 
-  @Column(name = "updated", updatable = false, nullable = false)
+  @UpdateTimestamp
+  @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
   public TaskList() {
 
   }
 
-  public TaskList(String title, String description, List<Task> tasks, LocalDateTime created, LocalDateTime updated) {
+  public TaskList(String title, String description, List<Task> tasks) {
     this.title = title;
     this.description = description;
     this.tasks = tasks;
-    this.created = created;
-    this.updated = updated;
   }
 
   public UUID getId() {
