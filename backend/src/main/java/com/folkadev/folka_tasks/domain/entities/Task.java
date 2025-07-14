@@ -34,10 +34,6 @@ public class Task {
   @JoinColumn(name = "task_list_id")
   private TaskList taskList;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
-
   @Column(name = "created", updatable = false, nullable = false)
   private LocalDateTime created;
 
