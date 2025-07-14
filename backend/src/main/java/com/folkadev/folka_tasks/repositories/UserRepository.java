@@ -11,5 +11,5 @@ import com.folkadev.folka_tasks.domain.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-  Optional<User> findByUserId(UUID userId);
+  Optional<User> findById(UUID userId);
 }
