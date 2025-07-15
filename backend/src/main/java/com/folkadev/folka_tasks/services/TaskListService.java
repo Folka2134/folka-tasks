@@ -1,12 +1,15 @@
 package com.folkadev.folka_tasks.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.stereotype.Service;
+import com.folkadev.folka_tasks.domain.dto.TaskListDto;
 
-import com.folkadev.folka_tasks.domain.entities.TaskList;
-
-@Service
 public interface TaskListService {
-  List<TaskList> listTaskList();
+  List<TaskListDto> listTaskList();
+
+  TaskListDto createdTaskList(TaskListDto taskListDto);
+
+  Optional<TaskListDto> getTaskList(UUID taskListId);
 }
