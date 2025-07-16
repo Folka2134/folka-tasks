@@ -4,17 +4,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.folkadev.folka_tasks.domain.dto.TaskListDto;
 import com.folkadev.folka_tasks.services.TaskListService;
 
-@Controller
+@RestController
 @RequestMapping(path = "/task-lists")
 public class TaskListController {
 
@@ -30,8 +33,10 @@ public class TaskListController {
   }
 
   @PostMapping
-  public TaskListDto createTaskList(@RequestBody TaskListDto taskListDto) {
-    return taskListService.createdTaskList(taskListDto);
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<TaskListDto> createTaskList(@RequestBody TaskListDto taskListDto) {
+    TaskListDto createdTaskList = taskListService.createdTaskList(taskListDto);
+    return new ResponseEntity<>(createdTaskList, HttpStatus.CREATED);
   }
 
   @GetMapping(path = "/{task_list_id}")
