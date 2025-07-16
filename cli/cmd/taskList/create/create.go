@@ -37,12 +37,12 @@ func createTaskList(title, description string) {
 		return
 	}
 
-	taskList := models.TaskList{
+	newTaskList := models.TaskList{
 		Title:       title,
 		Description: description,
 	}
 
-	jsonData, err := json.Marshal(taskList)
+	jsonData, err := json.Marshal(newTaskList)
 	if err != nil {
 		fmt.Printf("Error marshalling task list: %v\n", err)
 		return
@@ -66,7 +66,7 @@ func createTaskList(title, description string) {
 		return
 	}
 
-	fmt.Printf("Task list created successfully! Title: %s, Description: %s\n", createdTaskList.Title, createdTaskList.Description)
+	fmt.Printf("Task list created successfully! ID: %s, Title: %s, Description: %s\n", createdTaskList.ID, createdTaskList.Title, createdTaskList.Description)
 }
 
 func GetCommand() *cobra.Command {
