@@ -46,4 +46,12 @@ public class TaskListServiceImpl implements TaskListService {
   public Optional<TaskListDto> getTaskList(UUID taskListId) {
     return taskListRepository.findById(taskListId).map(taskListMapper::toDto);
   }
+
+  @Override
+  public void deleteTaskList(UUID taskListId) {
+    if (!taskListRepository.existsById(taskListId)) {
+      throw new IllegalArgumentException("Task list with id " + taskListId + " does not exist");
+    }
+    taskListRepository.deleteById(taskListId);
+  }
 }

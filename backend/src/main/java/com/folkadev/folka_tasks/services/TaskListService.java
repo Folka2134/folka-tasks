@@ -12,4 +12,7 @@ public interface TaskListService {
   TaskListDto createdTaskList(TaskListDto taskListDto);
 
   Optional<TaskListDto> getTaskList(UUID taskListId);
+
+  void deleteTaskList(UUID taskListId);
+
 }

@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,5 +43,10 @@ public class TaskListController {
   @GetMapping(path = "/{task_list_id}")
   public Optional<TaskListDto> getTaskList(@PathVariable("task_list_id") UUID taskListid) {
     return taskListService.getTaskList(taskListid);
+  }
+
+  @DeleteMapping(path = "/{task_list_id}")
+  public void deleteTaskList(@PathVariable("task_list_id") UUID taskListId) {
+    taskListService.deleteTaskList(taskListId);
   }
 }
