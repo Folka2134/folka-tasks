@@ -8,15 +8,11 @@ import (
 	"strconv"
 
 	"github.com/folka2134/folka-tasks/cli/cmd/models"
+	"github.com/folka2134/folka-tasks/cli/cmd/utils"
 	"github.com/spf13/cobra"
 )
 
-const backendURL = "http://localhost:8080"
-
-var (
-	taskListIDMap = make(map[int]models.TaskList)
-	taskIDMap     = make(map[int]string)
-)
+var taskIDMap = make(map[int]string)
 
 var getCmd = &cobra.Command{
 	Use:   "get [id]",
@@ -34,26 +30,23 @@ var getCmd = &cobra.Command{
 func getTaskList(idStr string) {
 	displayID, err := strconv.Atoi(idStr)
 	if err != nil {
-		fmt.Printf("Error: Invalid task list ID '%s'. Please provide a number.", idStr)
+		fmt.Printf("Error: Invalid task list ID '%s'. Please provide a number.\n", idStr)
 		return
 	}
 
-	// Ensure taskListIDMap is populated
-	if len(taskListIDMap) == 0 {
-		populateTaskListIDMap()
-		if len(taskListIDMap) == 0 {
-			fmt.Println("Error: No task lists found to retrieve.")
-			return
-		}
+	utils.PopulateTaskListIDMap()
+	if len(utils.TaskListIDMap) == 0 {
+		fmt.Println("Error: No task lists found to retrieve.")
+		return
 	}
 
-	taskListFromMap, ok := taskListIDMap[displayID]
+	taskListFromMap, ok := utils.TaskListIDMap[displayID]
 	if !ok {
-		fmt.Printf("Error: Task list with display ID %d not found. Please list all task lists first to get valid IDs.", displayID)
+		fmt.Printf("Error: Task list with display ID %d not found. Please list all task lists first to get valid IDs.\n", displayID)
 		return
 	}
 
-	resp, err := http.Get(fmt.Sprintf("%s/task-lists/%s", backendURL, taskListFromMap.ID))
+	resp, err := http.Get(fmt.Sprintf("%s/task-lists/%s", utils.BackendURL, taskListFromMap.ID))
 	if err != nil {
 		fmt.Println("Error fetching task list: ", err)
 		return
@@ -61,7 +54,7 @@ func getTaskList(idStr string) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("Error: received status code %d", resp.StatusCode)
+		fmt.Printf("Error: received status code %d\n", resp.StatusCode)
 		return
 	}
 
@@ -88,56 +81,24 @@ func getTaskList(idStr string) {
 	for i, task := range taskList.Tasks {
 		taskDisplayID := i + 1
 		taskIDMap[taskDisplayID] = task.ID
-		fmt.Printf("  %d. Title: %s, Description: %s, Status: %s, Priority: %s",
+		fmt.Printf("  %d. Title: %s, Description: %s, Status: %s, Priority: %s\n",
 			taskDisplayID, task.Title, task.Description, task.Status, task.Priority)
 	}
 }
 
 func getAllTaskLists() {
-	populateTaskListIDMap()
-	if len(taskListIDMap) == 0 {
+	utils.PopulateTaskListIDMap()
+	if len(utils.TaskListIDMap) == 0 {
 		fmt.Println("No task lists found.")
 		return
 	}
 
-	for i := 1; i <= len(taskListIDMap); i++ {
-		taskList, ok := taskListIDMap[i]
+	for i := 1; i <= len(utils.TaskListIDMap); i++ {
+		taskList, ok := utils.TaskListIDMap[i]
 		if !ok {
 			continue // Should not happen if map is populated correctly
 		}
 		fmt.Printf("%d. Title: %s, Description: %s\n", i, taskList.Title, taskList.Description)
-	}
-}
-
-func populateTaskListIDMap() {
-	resp, err := http.Get(fmt.Sprintf("%s/task-lists", backendURL))
-	if err != nil {
-		fmt.Println("Error fetching tasks: ", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("Error: received status code %d\n", resp.StatusCode)
-		return
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading response body: ", err)
-		return
-	}
-
-	var taskLists []models.TaskList
-	if err := json.Unmarshal(body, &taskLists); err != nil {
-		fmt.Println("Error unmarshalling JSON:", err)
-		return
-	}
-
-	taskListIDMap = make(map[int]models.TaskList) // Clear previous mappings
-	for i, taskList := range taskLists {
-		displayID := i + 1
-		taskListIDMap[displayID] = taskList
 	}
 }
 
