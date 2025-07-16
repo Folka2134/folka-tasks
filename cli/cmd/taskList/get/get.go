@@ -6,17 +6,11 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/folka2134/folka-tasks/cli/cmd/models"
 	"github.com/spf13/cobra"
 )
 
 const backendURL = "http://localhost:8080"
-
-type Task struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Content     string `json:"content"`
-}
 
 var getCmd = &cobra.Command{
 	Use:   "get [id]",
@@ -50,18 +44,18 @@ func getTaskList(id string) {
 		return
 	}
 
-	var task Task
-	if err := json.Unmarshal(body, &task); err != nil {
+	var taskList models.TaskList
+	if err := json.Unmarshal(body, &taskList); err != nil {
 		fmt.Println("Error unmarshalling JSON:", err)
 		return
 	}
 
-	if task.ID == 0 {
-		fmt.Println("Task not found")
-		return
-	}
+	// if taskList.ID == 0 {
+	// 	fmt.Println("Task not found")
+	// 	return
+	// }
 
-	fmt.Printf("- ID: %d, Title: %s\n", task.ID, task.Title)
+	fmt.Printf("- Title: %s, Description: %s\n", taskList.Title, taskList.Description)
 }
 
 func getAllTaskLists() {
@@ -83,14 +77,14 @@ func getAllTaskLists() {
 		return
 	}
 
-	var tasks []Task
-	if err := json.Unmarshal(body, &tasks); err != nil {
+	var taskLists []models.TaskList
+	if err := json.Unmarshal(body, &taskLists); err != nil {
 		fmt.Println("Error unmarshalling JSON:", err)
 		return
 	}
 
-	for _, task := range tasks {
-		fmt.Printf("- ID: %d, Title: %s\n", task.ID, task.Title)
+	for _, taskList := range taskLists {
+		fmt.Printf("- Title: %s, Description: %s\n", taskList.Title, taskList.Description)
 	}
 }
 
