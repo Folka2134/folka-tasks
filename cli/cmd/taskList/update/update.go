@@ -23,9 +23,6 @@ var updateCmd = &cobra.Command{
 	Short: "Update a task list by its ID",
 	Long:  "This command allows you to update a task list by its ID. You must provide the ID, title, and description of the task list.",
 	Run: func(cmd *cobra.Command, args []string) {
-		// if len(args) != 2 {
-		// 	fmt.Println("Error: You must provide atleast two arguments: [id] [title] and/or [description].")
-		// } else {
 		updateTaskList(args)
 	},
 }
