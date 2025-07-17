@@ -4,6 +4,7 @@ import (
 	"github.com/folka2134/folka-tasks/cli/cmd/taskList/create"
 	"github.com/folka2134/folka-tasks/cli/cmd/taskList/delete"
 	"github.com/folka2134/folka-tasks/cli/cmd/taskList/get"
+	"github.com/folka2134/folka-tasks/cli/cmd/taskList/update"
 	"github.com/spf13/cobra"
 )
 
@@ -17,6 +18,7 @@ func init() {
 	TaskListCmd.AddCommand(create.GetCommand())
 	TaskListCmd.AddCommand(get.GetCommand())
 	TaskListCmd.AddCommand(delete.GetCommand())
+	TaskListCmd.AddCommand(update.GetCommand())
 }
 
 func GetCommand() *cobra.Command {
