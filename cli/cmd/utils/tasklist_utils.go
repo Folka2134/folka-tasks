@@ -39,9 +39,10 @@ func PopulateTaskListIDMap() {
 		return
 	}
 
-	TaskListIDMap = make(map[int]models.TaskList) // Clear previous mappings
-	for i, taskList := range taskLists {
-		displayID := i + 1
+	TaskListIDMap = make(map[int]models.TaskList)
+	for i := len(taskLists) - 1; i >= 0; i-- {
+		taskList := taskLists[i]
+		displayID := len(taskLists) - i
 		TaskListIDMap[displayID] = taskList
 	}
 }
