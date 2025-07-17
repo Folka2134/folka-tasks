@@ -25,7 +25,7 @@ var DeleteCmd = &cobra.Command{
 
 func deleteTaskList(idStr string) {
 	client := &http.Client{}
-	// Convert id from string to int
+
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		fmt.Println("Error: Invalid task list id. Please provide a number.")
@@ -57,13 +57,12 @@ func deleteTaskList(idStr string) {
 	}
 
 	defer resp.Body.Close()
-	//
-	// Check response status code
+
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("Error: Unable to delete task list with id %d. Status code: %d\n", id, resp.StatusCode)
 		return
 	}
-	// print success message
+
 	fmt.Printf("Task list with id %d deleted successfully.\n", id)
 }
 

@@ -1,8 +1,9 @@
 package models
 
-type TaskList struct {
+type Task struct {
 	ID          string `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Tasks       []Task `json:"tasks"`
+	Status      string `json:"status"`
+	Priority    string `json:"priority"`
 }
