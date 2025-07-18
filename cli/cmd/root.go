@@ -6,6 +6,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/folka2134/folka-tasks/cli/cmd/task"
 	tasklist "github.com/folka2134/folka-tasks/cli/cmd/taskList"
 	"github.com/spf13/cobra"
 )
@@ -26,4 +27,5 @@ func Execute() {
 
 func init() {
 	RootCmd.AddCommand(tasklist.GetCommand())
+	RootCmd.AddCommand(task.GetCommand())
 }
