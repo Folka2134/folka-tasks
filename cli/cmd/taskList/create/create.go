@@ -16,6 +16,8 @@ var (
 	taskListDescription string
 )
 
+var HttpPost = http.Post
+
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create a new task list",
@@ -26,8 +28,8 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	createCmd.Flags().StringVarP(&taskListTitle, "title", "t", "", "Title of the task to be added")
-	createCmd.Flags().StringVarP(&taskListDescription, "description", "d", "", "Description of the task to be added")
+	createCmd.Flags().StringVarP(&taskListTitle, "title", "t", "", "Title of the taskList to be added")
+	createCmd.Flags().StringVarP(&taskListDescription, "description", "d", "", "Description of the taskList to be added")
 	createCmd.MarkFlagRequired("title")
 }
 
@@ -48,7 +50,7 @@ func createTaskList(title, description string) {
 		return
 	}
 
-	resp, err := http.Post("http://localhost:8080/task-lists", "application/json", bytes.NewBuffer(jsonData))
+	resp, err := HttpPost("http://localhost:8080/task-lists", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Printf("Error creating task list: %v\n", err)
 		return
