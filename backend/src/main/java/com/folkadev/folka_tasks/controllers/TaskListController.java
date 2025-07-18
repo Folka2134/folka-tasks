@@ -51,7 +51,6 @@ public class TaskListController {
     taskListService.deleteTaskList(taskListId);
   }
 
-  // @PutMapping(path = "/{task_list_id}")
   @RequestMapping(method = RequestMethod.PUT, path = "/{task_list_id}")
   public Optional<TaskListDto> updateTaskList(@PathVariable("task_list_id") UUID taskListId,
       @RequestBody TaskListDto taskListDto) {
