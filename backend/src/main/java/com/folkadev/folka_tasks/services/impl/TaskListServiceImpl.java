@@ -1,6 +1,7 @@
 package com.folkadev.folka_tasks.services.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,24 +57,23 @@ public class TaskListServiceImpl implements TaskListService {
   }
 
   @Override
-  public Optional<TaskListDto> updateTaskList(UUID taskListId, TaskListDto taskListDto) {
-    if (!taskListRepository.existsById(taskListId)) {
-      throw new IllegalArgumentException("Task list with id " + taskListId + " does not exist");
+  public TaskListDto updateTaskList(UUID taskListId, TaskListDto taskListDto) {
+    if (!Objects.equals(taskListId, taskListDto.id())) {
+      throw new IllegalArgumentException("Changing task list id is not permitted");
     }
 
-    var taskListToUpdate = taskListRepository.findById(taskListId);
-
-    taskListToUpdate.ifPresent(taskList -> {
-      if (taskListDto.title() != null && !taskListDto.title().isBlank()) {
-        taskList.setTitle(taskListDto.title());
-      }
-      if (taskListDto.description() != null) {
-        taskList.setDescription(taskListDto.description());
-      }
+    TaskList taskListToUpdate = taskListRepository.findById(taskListId).orElseThrow(() -> {
+      throw new IllegalArgumentException("Task list with id " + taskListId + " does not exist");
     });
 
-    taskListToUpdate.ifPresent(taskListRepository::save);
-    return taskListToUpdate.map(taskListMapper::toDto);
+    if (taskListDto.title() != null && !taskListDto.title().isBlank()) {
+      taskListToUpdate.setTitle(taskListDto.title());
+    }
+    if (taskListDto.description() != null) {
+      taskListToUpdate.setDescription(taskListDto.description());
+    }
+    TaskList updatedTaskList = taskListRepository.save(taskListToUpdate);
+    return taskListMapper.toDto(updatedTaskList);
   }
 
 }

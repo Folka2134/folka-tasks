@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.folkadev.folka_tasks.domain.dto.TaskDto;
 import com.folkadev.folka_tasks.domain.dto.TaskListDto;
 
 public interface TaskListService {
-  List<TaskListDto> listTaskList();
+  List<TaskListDto> listTaskLists();
+
+  List<TaskDto> getTasksFromTaskList(UUID taskListId);
 
   TaskListDto createdTaskList(TaskListDto taskListDto);
 
@@ -15,6 +18,6 @@ public interface TaskListService {
 
   void deleteTaskList(UUID taskListId);
 
-  Optional<TaskListDto> updateTaskList(UUID taskLIdID, TaskListDto taskListDto);
+  TaskListDto updateTaskList(UUID taskLIdID, TaskListDto taskListDto);
 
 }
