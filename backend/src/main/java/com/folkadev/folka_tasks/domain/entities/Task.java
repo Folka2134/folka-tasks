@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -34,9 +37,11 @@ public class Task {
   @JoinColumn(name = "task_list_id")
   private TaskList taskList;
 
+  @CreationTimestamp
   @Column(name = "created", updatable = false, nullable = false)
   private LocalDateTime created;
 
+  @UpdateTimestamp
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
@@ -44,15 +49,13 @@ public class Task {
   }
 
   public Task(String title, String description, LocalDateTime dueDate, TaskPriority priority,
-      TaskStatus status, TaskList task, LocalDateTime created, LocalDateTime updated) {
+      TaskStatus status, TaskList taskList) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
     this.status = status;
-    this.taskList = task;
-    this.created = created;
-    this.updated = updated;
+    this.taskList = taskList;
   }
 
   public UUID getId() {
