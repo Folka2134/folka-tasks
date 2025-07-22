@@ -40,7 +40,7 @@ func deleteTaskList(idStr string) {
 
 	taskListFromMap, ok := utils.TaskListIDMap[id]
 	if !ok {
-		fmt.Printf("Error: Task list with display id %d not found. Get task lists first to get a valid ID", id)
+		fmt.Printf("Error: Task list with display id %d not found. Get task lists first to get a valid ID\n", id)
 		return
 	}
 

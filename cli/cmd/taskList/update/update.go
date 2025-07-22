@@ -36,6 +36,7 @@ func updateTaskList(args []string) {
 	taskListId, err := strconv.Atoi(args[0])
 	if err != nil {
 		fmt.Printf("Error: Invalid task list ID '%s'. Please provide a number.\n", args[0])
+		return
 	}
 	utils.PopulateTaskListIDMap()
 	if len(utils.TaskListIDMap) == 0 {
@@ -46,6 +47,7 @@ func updateTaskList(args []string) {
 	taskListFromMap, ok := utils.TaskListIDMap[taskListId]
 	if !ok {
 		fmt.Printf("Error: Task list with ID %d not found. Please list all task lists first to get valid IDs.\n", taskListId)
+		return
 	}
 
 	if taskListTitle != "" {
