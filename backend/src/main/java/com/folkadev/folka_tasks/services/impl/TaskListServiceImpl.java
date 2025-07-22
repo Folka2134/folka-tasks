@@ -24,7 +24,7 @@ public class TaskListServiceImpl implements TaskListService {
   }
 
   @Override
-  public List<TaskListDto> listTaskList() {
+  public List<TaskListDto> listTaskLists() {
     return taskListRepository.findAll().stream().map(taskListMapper::toDto).toList();
   }
 

@@ -31,7 +31,7 @@ public class TaskListController {
 
   @GetMapping
   public List<TaskListDto> listTaskLists() {
-    return taskListService.listTaskList();
+    return taskListService.listTaskLists();
   }
 
   @PostMapping
