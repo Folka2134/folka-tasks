@@ -19,6 +19,7 @@ import com.folkadev.folka_tasks.domain.dto.TaskDto;
 import com.folkadev.folka_tasks.services.TaskService;
 
 @RestController
+@RequestMapping(path = "/tasks")
 public class TaskController {
 
   private final TaskService taskService;
@@ -27,10 +28,10 @@ public class TaskController {
     this.taskService = taskService;
   }
 
-  @PostMapping
+  @PostMapping(path = "/{list_id}")
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
-    TaskDto createdTask = taskService.createTask(taskDto);
+  public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto, @PathVariable("list_id") UUID listId) {
+    TaskDto createdTask = taskService.createTask(taskDto, listId);
     return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
   }
 
@@ -40,11 +41,11 @@ public class TaskController {
   }
 
   @RequestMapping(method = RequestMethod.PUT, path = "/{task_id}")
-  public Optional<TaskDto> updateTask(@PathVariable("task_id") UUID taskId, TaskDto taskDto) {
+  public TaskDto updateTask(@PathVariable("task_id") UUID taskId, TaskDto taskDto) {
     return taskService.updateTask(taskId, taskDto);
   }
 
-  @DeleteMapping(path = "/{task_id")
+  @DeleteMapping(path = "/{task_id}")
   public void deleteTask(@PathVariable("task_id") UUID taskId) {
     taskService.deleteTask(taskId);
   }

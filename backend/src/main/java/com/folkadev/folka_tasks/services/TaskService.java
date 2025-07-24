@@ -9,7 +9,7 @@ import com.folkadev.folka_tasks.domain.dto.TaskDto;
 public interface TaskService {
   List<TaskDto> listTasks();
 
-  TaskDto createTask(TaskDto taskDto);
+  TaskDto createTask(TaskDto taskDto, UUID listId);
 
   Optional<TaskDto> getTask(UUID taskId);
 
