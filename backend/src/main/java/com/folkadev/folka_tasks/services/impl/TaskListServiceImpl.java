@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.folkadev.folka_tasks.domain.dto.TaskListDto;
+import com.folkadev.folka_tasks.domain.entities.TaskList;
 import com.folkadev.folka_tasks.mappers.TaskListMapper;
 import com.folkadev.folka_tasks.repositories.TaskListRepository;
 import com.folkadev.folka_tasks.services.TaskListService;
