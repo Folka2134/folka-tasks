@@ -76,7 +76,9 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public void deleteTask(UUID taskId) {
-    // TODO Auto-generated method stub
-
+    if (!taskRepository.existsById(taskId)) {
+      throw new IllegalArgumentException("Task with id " + taskId + " does not exist");
+    }
+    taskRepository.deleteById(taskId);
   }
 }
