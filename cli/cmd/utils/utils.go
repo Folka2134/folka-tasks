@@ -11,7 +11,10 @@ import (
 
 const BackendURL = "http://localhost:8080"
 
-var TaskListIDMap = make(map[int]models.TaskList)
+var (
+	TaskListIDMap = make(map[int]models.TaskList)
+	TaskIDMap     = make(map[int]string)
+)
 
 // PopulateTaskListIDMap fetches all task lists and populates the in-memory map.
 func PopulateTaskListIDMap() {
@@ -44,5 +47,16 @@ func PopulateTaskListIDMap() {
 		taskList := taskLists[i]
 		displayID := len(taskLists) - i
 		TaskListIDMap[displayID] = taskList
+	}
+}
+
+func PopulateTaskIdMap(taskList models.TaskList) {
+	if len(taskList.Tasks) == 0 {
+		fmt.Println("  No tasks in this list.")
+		return
+	}
+	for i, task := range taskList.Tasks {
+		taskDisplayID := i + 1
+		TaskIDMap[taskDisplayID] = task.ID
 	}
 }
