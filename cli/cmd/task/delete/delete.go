@@ -55,14 +55,14 @@ func deleteTask() {
 		return
 	}
 
-	taskIdFromMap, ok := utils.TaskIDMap[displayTaskId]
+	taskFromMap, ok := utils.TaskIDMap[displayTaskId]
 	if !ok {
 		fmt.Printf("Error: Task with display ID %d not found in task list '%s'. Please run 'task get' to see available tasks.\n", displayTaskId, taskList.Title)
 		return
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/tasks/%s", utils.BackendURL, taskIdFromMap), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/tasks/%s", utils.BackendURL, taskFromMap.ID), nil)
 	if err != nil {
 		fmt.Println("Error: Unable to create request:", err)
 		return
@@ -80,7 +80,7 @@ func deleteTask() {
 	// 	return
 	// }
 
-	fmt.Printf("Task with id %s deleted successfully.\n", taskIdFromMap)
+	fmt.Printf("Task with id %s deleted successfully.\n", taskFromMap.ID)
 }
 
 func GetCommand() *cobra.Command {
