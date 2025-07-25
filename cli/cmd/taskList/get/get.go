@@ -73,7 +73,6 @@ func getTaskList(idStr string) {
 	fmt.Printf("Task List: %s (Description: %s)\n", taskList.Title, taskList.Description)
 
 	fmt.Println("Tasks:")
-	taskIDMap = make(map[int]string) // Clear previous mappings
 	if len(taskList.Tasks) == 0 {
 		fmt.Println("  No tasks in this list.")
 		return
@@ -96,7 +95,7 @@ func getAllTaskLists() {
 	for i := 1; i <= len(utils.TaskListIDMap); i++ {
 		taskList, ok := utils.TaskListIDMap[i]
 		if !ok {
-			continue // Should not happen if map is populated correctly
+			continue
 		}
 		fmt.Printf("%d. Title: %s, Description: %s\n", i, taskList.Title, taskList.Description)
 	}
@@ -105,4 +104,3 @@ func getAllTaskLists() {
 func GetCommand() *cobra.Command {
 	return getCmd
 }
-
