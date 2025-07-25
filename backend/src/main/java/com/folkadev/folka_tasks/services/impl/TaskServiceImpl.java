@@ -1,12 +1,14 @@
 package com.folkadev.folka_tasks.services.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.folkadev.folka_tasks.domain.dto.TaskDto;
+import com.folkadev.folka_tasks.domain.entities.Task;
 import com.folkadev.folka_tasks.domain.entities.TaskList;
 import com.folkadev.folka_tasks.domain.entities.TaskPriority;
 import com.folkadev.folka_tasks.domain.entities.TaskStatus;
@@ -70,8 +72,26 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public TaskDto updateTask(UUID taskId, TaskDto taskDto) {
-    // TODO Auto-generated method stub
-    return taskDto;
+
+    if (!Objects.equals(taskId, taskDto.id())) {
+      throw new IllegalArgumentException("Changing task list id is not permitted");
+    }
+    Task taskToUpdate = taskRepository.findById(taskId).orElseThrow(() -> {
+      throw new IllegalArgumentException("Task with id " + taskId + " does not exist");
+    });
+
+    if (taskDto.title() != null && !taskDto.title().isBlank()) {
+      taskToUpdate.setTitle(taskDto.title());
+    }
+    if (taskDto.title() != null && !taskDto.title().isBlank()) {
+      taskToUpdate.setDescription(taskDto.description());
+    }
+    if (taskDto.dueDate() != null) {
+      taskToUpdate.setDueDate(taskDto.dueDate());
+    }
+
+    Task updatedTask = taskRepository.save(taskToUpdate);
+    return taskMapper.toDto(updatedTask);
   }
 
   @Override

@@ -41,7 +41,7 @@ public class TaskController {
   }
 
   @RequestMapping(method = RequestMethod.PUT, path = "/{task_id}")
-  public TaskDto updateTask(@PathVariable("task_id") UUID taskId, TaskDto taskDto) {
+  public TaskDto updateTask(@RequestBody TaskDto taskDto, @PathVariable("task_id") UUID taskId) {
     return taskService.updateTask(taskId, taskDto);
   }
 
