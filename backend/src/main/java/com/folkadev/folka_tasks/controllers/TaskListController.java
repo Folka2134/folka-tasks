@@ -1,7 +1,6 @@
 package com.folkadev.folka_tasks.controllers;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -42,8 +41,10 @@ public class TaskListController {
   }
 
   @GetMapping(path = "/{task_list_id}")
-  public Optional<TaskListDto> getTaskList(@PathVariable("task_list_id") UUID taskListid) {
-    return taskListService.getTaskList(taskListid);
+  public ResponseEntity<TaskListDto> getTaskList(@PathVariable("task_list_id") UUID taskListid) {
+    return taskListService.getTaskList(taskListid)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping(path = "/{task_list_id}")
