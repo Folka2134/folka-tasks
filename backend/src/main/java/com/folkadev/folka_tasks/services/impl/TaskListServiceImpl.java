@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.folkadev.folka_tasks.domain.dto.TaskListDto;
 import com.folkadev.folka_tasks.domain.entities.TaskList;
+import com.folkadev.folka_tasks.exceptions.ResourceNotFoundException;
 import com.folkadev.folka_tasks.mappers.TaskListMapper;
 import com.folkadev.folka_tasks.repositories.TaskListRepository;
 import com.folkadev.folka_tasks.services.TaskListService;
@@ -64,7 +65,7 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     TaskList taskListToUpdate = taskListRepository.findById(taskListId).orElseThrow(() -> {
-      throw new IllegalArgumentException("Task list with id " + taskListId + " does not exist");
+      throw new ResourceNotFoundException("Task list with id " + taskListId + " does not exist");
     });
 
     if (taskListDto.title() != null && !taskListDto.title().isBlank()) {
