@@ -58,7 +58,7 @@ func deleteTaskList(idStr string) {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusNoContent {
 		fmt.Printf("Error: Unable to delete task list with id %d. Status code: %d\n", id, resp.StatusCode)
 		return
 	}
