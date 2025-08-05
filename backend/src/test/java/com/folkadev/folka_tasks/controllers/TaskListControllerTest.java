@@ -1,10 +1,16 @@
 package com.folkadev.folka_tasks.controllers;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,6 +28,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.folkadev.folka_tasks.domain.dto.TaskListDto;
@@ -64,7 +71,7 @@ public class TaskListControllerTest {
   }
 
   @Nested
-  @DisplayName("GET /task-lists/{taskListId")
+  @DisplayName("GET /task-lists/{taskListId}")
   class GetTaskList {
     @Test
     void shouldReturnTaskListWhenItExists() throws Exception {
@@ -134,4 +141,36 @@ public class TaskListControllerTest {
     }
   }
 
+  @Nested
+  @DisplayName("DELETE /task-lists/{taskListId}")
+  class DeleteTaskList {
+
+    @Test
+    void shouldReturnSuccessWhenTaskExists() throws Exception {
+      UUID taskListId = UUID.randomUUID();
+
+      doNothing().when(taskListService).deleteTaskList(taskListId);
+      mockMvc.perform(delete("/task-lists/{task_list_id}", taskListId));
+      verify(taskListService).deleteTaskList(taskListId);
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenTaskListDoesNotExist() throws Exception {
+      UUID taskListId = UUID.randomUUID();
+
+      doThrow(new ResourceNotFoundException("Task List with id " + taskListId + "does not exist")).when(taskListService)
+          .deleteTaskList(taskListId);
+      mockMvc.perform(delete("/task-lists/{task_list_id}", taskListId)).andExpect(status().isNotFound());
+
+      verify(taskListService).deleteTaskList(taskListId);
+    }
+
+    @Test
+    void shouldReturnErrorWhenInvalidIdIsPassed() throws Exception {
+      int invalidId = 1234;
+
+      mockMvc.perform(delete("/task-lists/{task_list_id}", invalidId)).andExpect(status().isBadRequest())
+          .andExpect(content().string((containsString("Invalid ID format"))));
+    }
+  }
 }
