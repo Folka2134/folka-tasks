@@ -53,7 +53,7 @@ public class TaskListServiceImpl implements TaskListService {
   @Override
   public void deleteTaskList(UUID taskListId) {
     if (!taskListRepository.existsById(taskListId)) {
-      throw new IllegalArgumentException("Task list with id " + taskListId + " does not exist");
+      throw new ResourceNotFoundException("Task list with id " + taskListId + " does not exist");
     }
     taskListRepository.deleteById(taskListId);
   }
