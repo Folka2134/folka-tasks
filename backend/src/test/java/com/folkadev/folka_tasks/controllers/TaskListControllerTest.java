@@ -95,6 +95,14 @@ public class TaskListControllerTest {
       mockMvc.perform(get("/task-lists/{task_list_id}", taskListId))
           .andExpect(status().isNotFound());
     }
+
+    @Test
+    void shouldReturnErrorWhenInvalidIdIsPassed() throws Exception {
+      int invalidId = 1234;
+
+      mockMvc.perform(get("/task-lists/{task_list_id}", invalidId)).andExpect(status().isBadRequest())
+          .andExpect(content().string(containsString("Invalid ID format")));
+    }
   }
 
   @Nested
@@ -138,6 +146,15 @@ public class TaskListControllerTest {
           .content(new ObjectMapper().writeValueAsString(updatedTaskListDto)))
           .andExpect(status().isNotFound());
     }
+
+    @Test
+    void shouldReturnErrorWhenInvalidIdIsPassed() throws Exception {
+      int invalidId = 1234;
+
+      mockMvc.perform(get("/task-lists/{task_list_id}", invalidId)).andExpect(status().isBadRequest())
+          .andExpect(content().string(containsString("Invalid ID format")));
+    }
+
   }
 
   @Nested
