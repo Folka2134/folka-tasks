@@ -88,7 +88,7 @@ func getTaskList(idStr string) {
 func getAllTaskLists() {
 	utils.PopulateTaskListIDMap()
 	if len(utils.TaskListIDMap) == 0 {
-		fmt.Println("Error: No task lists found.")
+		fmt.Println("No task lists found.")
 		return
 	}
 
