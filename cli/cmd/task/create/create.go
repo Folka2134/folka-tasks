@@ -101,4 +101,3 @@ func createTask(taskListId, title, description string) {
 func GetCommand() *cobra.Command {
 	return createCmd
 }
-
